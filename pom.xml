@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.twitter.dev</groupId>
+    <artifactId>twitter-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <java.version>1.8</java.version>
+
+        <groovy.version>2.3.11</groovy.version>
+        <groovy.http.builder.version>0.7.1</groovy.http.builder.version>
+        <spock-core.version>1.1-groovy-2.3-rc-3</spock-core.version>
+        <spock-reports.version>1.2.13</spock-reports.version>
+        <log4j-api.version>2.8.2</log4j-api.version>
+        <log4j-core.version>2.8.2</log4j-core.version>
+        <signpost-commonshttp4.version>1.2.1.1</signpost-commonshttp4.version>
+        <httpcore.version>4.2.1</httpcore.version>
+
+        <groovy.eclipse.compiler.plugin.version>2.9.2-01</groovy.eclipse.compiler.plugin.version>
+        <groovy.eclipse.batch.compiler.plugin.version>2.3.7-01</groovy.eclipse.batch.compiler.plugin.version>
+
+        <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
+
+    </properties>
+
+    <dependencies>
+
+        <!-- Groovy -->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.version}</version>
+        </dependency>
+
+        <!-- Easy HTTP client for Groovy -->
+        <dependency>
+            <groupId>org.codehaus.groovy.modules.http-builder</groupId>
+            <artifactId>http-builder</artifactId>
+            <version>${groovy.http.builder.version}</version>
+        </dependency>
+
+        <!-- Spock -->
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>${spock-core.version}</version>
+        </dependency>
+
+        <!-- Spock Reports in HTML with documentation from code -->
+        <dependency>
+            <groupId>com.athaydes</groupId>
+            <artifactId>spock-reports</artifactId>
+            <version>${spock-reports.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Logger  -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j-core.version}</version>
+        </dependency>
+
+        <!-- OAuth authentication lib  -->
+        <dependency>
+            <groupId>oauth.signpost</groupId>
+            <artifactId>signpost-commonshttp4</artifactId>
+            <version>${signpost-commonshttp4.version}</version>
+        </dependency>
+
+        <!-- httpcore version is explicitly specified because of versions contradictions for groovy and signpost -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>${httpcore.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Compiler plugin for Groovy code  -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <compilerId>groovy-eclipse-compiler</compilerId>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-eclipse-compiler</artifactId>
+                        <version>${groovy.eclipse.compiler.plugin.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-eclipse-batch</artifactId>
+                        <version>${groovy.eclipse.batch.compiler.plugin.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-compiler</artifactId>
+                <version>${groovy.eclipse.compiler.plugin.version}</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <!-- override Spock Reports output directory -->
+                    <systemPropertyVariables>
+                        <com.athaydes.spockframework.report.outputDir>target/spock-reports</com.athaydes.spockframework.report.outputDir>
+                    </systemPropertyVariables>
+                    <!-- allow to give Spock Specification names with *Spec and *Specification prefixes -->
+                    <includes>
+                        <include>**/*Spec*.java</include>
+                        <include>**/*Specification*.java</include>
+                        <include>**/*Test*.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+
+</project>

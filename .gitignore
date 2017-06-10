@@ -1,0 +1,9 @@
+# Mac OS X hidden files
+.DS_Store
+
+*.iml
+*.iws
+.idea/
+/target/
+
+/out/

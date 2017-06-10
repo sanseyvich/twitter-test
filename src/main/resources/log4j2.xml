@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="filename">target/log/all.log</Property>
+    </Properties>
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{ISO8601} %-5p [%c{1}/%t]: %m%n"/>
+        </Console>
+        <File name="FILEOUT" fileName="${filename}" immediateFlush="false" append="false">
+            <PatternLayout pattern="%date{HH:mm:ss.SSS} %-5p [%X{transactionId}/%t/%logger{0}]]: %m%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="FILEOUT"/>
+        </Root>
+    </Loggers>
+</Configuration>
