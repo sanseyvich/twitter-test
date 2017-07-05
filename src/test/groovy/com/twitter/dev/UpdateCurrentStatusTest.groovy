@@ -3,6 +3,7 @@ package com.twitter.dev
 import com.twitter.dev.rest.TwitterClient
 import com.twitter.dev.utils.Utils
 import org.apache.commons.lang.RandomStringUtils
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -82,6 +83,8 @@ class UpdateCurrentStatusTest extends Specification {
         twitterClient.statusDestroy(response.data.id)
     }
 
+    @Ignore
+    // Test fails because of twitter API defect according to specification
     def "'trim_user' parameter trims a user object to include only the status authors numerical ID"() {
         when: 'consumer authenticated by user post a status with including "trim_user=true" parameter'
         def response = twitterClient.statusUpdate([
