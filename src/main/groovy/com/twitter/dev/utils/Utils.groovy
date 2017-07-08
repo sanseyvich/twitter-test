@@ -4,6 +4,7 @@ import groovyx.net.http.RESTClient
 import org.apache.commons.codec.binary.Base64
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.codehaus.groovy.control.ConfigurationException
 
 /**
  * Created by sanseyvich on 5/28/17.
@@ -28,10 +29,19 @@ class Utils {
                 config.authorization.ACCESS_SECRET instanceof ConfigObject ||
                 config.user.name instanceof ConfigObject ||
                 config.data.id_to_retweet instanceof ConfigObject)
-        throw new MissingPropertyException('authorization.CONSUMER_KEY, ' +
+        throw new ConfigurationException('authorization.CONSUMER_KEY, ' +
                 'authorization.CONSUMER_SECRET, authorization.ACCESS_TOKEN, ' +
-                'authorization.ACCESS_SECRET, config.user.name, config.data.id_to_retweet ' +
+                'authorization.ACCESS_SECRET, \n config.user.name, config.data.id_to_retweet ' +
                 '- should be specified in configuration file')
+
+        //check if needed properties are not empty/null
+        if (config.authorization.CONSUMER_KEY == '' ||
+                config.authorization.CONSUMER_SECRET == '' ||
+                config.authorization.ACCESS_TOKEN == '' ||
+                config.authorization.ACCESS_SECRET == '' ||
+                config.user.name == '' ||
+                config.data.id_to_retweet == null)
+            throw new ConfigurationException('Configuration file should not include empty or null values')
 
         return config
     }
